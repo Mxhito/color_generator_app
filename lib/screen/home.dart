@@ -15,6 +15,7 @@ class _HomeState extends State<Home> {
   final List<ColorHistory> _colorHistory = [];
 
   Color _backgroundColor = Colors.white;
+  String _hexCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +39,7 @@ class _HomeState extends State<Home> {
         onTap: () {
           setState(() {
             _backgroundColor = _generateColor();
-            String _hexCode =
-                _backgroundColor.value.toRadixString(16).padLeft(8, '0');
+            _hexCode = _backgroundColor.value.toRadixString(16).padLeft(8, '0');
             _colorHistory.add(
               ColorHistory(_backgroundColor, _hexCode),
             );
