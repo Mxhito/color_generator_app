@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 /// Home screen
 class Home extends StatefulWidget {
@@ -24,6 +25,15 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text('Solid Software'),
         centerTitle: true,
+        actions: [
+          GestureDetector(
+            onTap: _launchUrl,
+            child: const Padding(
+              padding: EdgeInsets.only(right: 16.0),
+              child: Icon(Icons.link),
+            ),
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -75,7 +85,7 @@ class ColorHistory {
   final String hexCode;
 
   /// Model constructor
-  ColorHistory(this.color, this.hexCode);
+  const ColorHistory(this.color, this.hexCode);
 
   /// Widget for display colors
   Widget getPreview(BuildContext context) {
@@ -125,4 +135,13 @@ void _copyToClipboard(String text, BuildContext context) {
       content: Text('Copied to clipboard'),
     ),
   );
+}
+
+Future<void> _launchUrl() async {
+  final Uri _url = Uri.parse('https://github.com/Mxhito/test_task_solid');
+
+  if (!await canLaunchUrlString(_url.toString())) {
+    throw Exception('Could not launch $_url');
+  }
+  await launchUrlString(_url.toString());
 }

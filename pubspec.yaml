@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   solid_lints: ^0.0.14
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_lints: ^2.0.0
