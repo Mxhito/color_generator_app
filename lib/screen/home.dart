@@ -27,13 +27,13 @@ class _HomeState extends State<Home> {
       ),
       drawer: Drawer(
         child: ListView(
-          children: [
-            ..._colorHistory.map((history) {
-              return ListTile(
-                title: history.getPreview(context),
-              );
-            }).toList(),
-          ],
+          children: _colorHistory
+              .map(
+                (color) => ListTile(
+                  title: color.getPreview(context),
+                ),
+              )
+              .toList(),
         ),
       ),
       body: GestureDetector(
@@ -41,10 +41,10 @@ class _HomeState extends State<Home> {
           setState(() {
             _backgroundColor = _generateColor();
             const hexadecimal = 16;
-            const _colorHexLenght = 8;
+            const _colorHexLength = 8;
             _hexCode = _backgroundColor.value
                 .toRadixString(hexadecimal)
-                .padLeft(_colorHexLenght, '0');
+                .padLeft(_colorHexLength, '0');
             _colorHistory.add(
               ColorHistory(_backgroundColor, _hexCode),
             );
@@ -69,37 +69,34 @@ class _HomeState extends State<Home> {
 /// Model for color history
 class ColorHistory {
   /// Color
-  final Color _color;
+  final Color color;
 
   /// HEX of color
-  final String _hexCode;
-
-  /// Size of container
-  final double _size = 40;
-
-  /// Border radius of container
-  final double _bordeRadius = 10;
+  final String hexCode;
 
   /// Model constructor
-  ColorHistory(this._color, this._hexCode);
+  ColorHistory(this.color, this.hexCode);
 
   /// Widget for display colors
   Widget getPreview(BuildContext context) {
+    const double sizeOfPreview = 40;
+    const double borderRadiusOfPreview = 10;
+
     return GestureDetector(
       onTap: () {
-        _copyToClipboard(_hexCode, context);
+        _copyToClipboard(hexCode, context);
         Navigator.pop(context);
       },
       child: Container(
-        width: _size,
-        height: _size,
+        width: sizeOfPreview,
+        height: sizeOfPreview,
         decoration: BoxDecoration(
-          color: _color,
-          borderRadius: BorderRadius.circular(_bordeRadius),
+          color: color,
+          borderRadius: BorderRadius.circular(borderRadiusOfPreview),
         ),
         child: Center(
           child: Text(
-            _hexCode,
+            hexCode,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
