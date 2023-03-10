@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Home screen
 class Home extends StatefulWidget {
@@ -29,7 +30,7 @@ class _HomeState extends State<Home> {
           children: [
             ..._colorHistory.map((history) {
               return ListTile(
-                title: history.getPreview(),
+                title: history.getPreview(context),
               );
             }).toList(),
           ],
@@ -39,7 +40,11 @@ class _HomeState extends State<Home> {
         onTap: () {
           setState(() {
             _backgroundColor = _generateColor();
-            _hexCode = _backgroundColor.value.toRadixString(16).padLeft(8, '0');
+            const hexadecimal = 16;
+            const _colorHexLenght = 8;
+            _hexCode = _backgroundColor.value
+                .toRadixString(hexadecimal)
+                .padLeft(_colorHexLenght, '0');
             _colorHistory.add(
               ColorHistory(_backgroundColor, _hexCode),
             );
@@ -64,33 +69,39 @@ class _HomeState extends State<Home> {
 /// Model for color history
 class ColorHistory {
   /// Color
-  final Color color;
+  final Color _color;
 
   /// HEX of color
-  final String hexCode;
+  final String _hexCode;
 
   /// Size of container
-  final double size = 40;
+  final double _size = 40;
 
   /// Border radius of container
-  final double bordeRadius = 10;
+  final double _bordeRadius = 10;
 
   /// Model constructor
-  ColorHistory(this.color, this.hexCode);
+  ColorHistory(this._color, this._hexCode);
 
   /// Widget for display colors
-  Widget getPreview() {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(bordeRadius),
-      ),
-      child: Center(
-        child: Text(
-          hexCode,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+  Widget getPreview(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _copyToClipboard(_hexCode, context);
+        Navigator.pop(context);
+      },
+      child: Container(
+        width: _size,
+        height: _size,
+        decoration: BoxDecoration(
+          color: _color,
+          borderRadius: BorderRadius.circular(_bordeRadius),
+        ),
+        child: Center(
+          child: Text(
+            _hexCode,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
@@ -107,5 +118,14 @@ Color _generateColor() {
     random.nextInt(_rgbLimiter),
     random.nextInt(_rgbLimiter),
     random.nextInt(_rgbLimiter),
+  );
+}
+
+void _copyToClipboard(String text, BuildContext context) {
+  Clipboard.setData(ClipboardData(text: text));
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text('Copied to clipboard'),
+    ),
   );
 }
