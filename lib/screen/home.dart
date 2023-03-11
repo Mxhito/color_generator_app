@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Home screen
 class Home extends StatefulWidget {
@@ -140,8 +140,7 @@ void _copyToClipboard(String text, BuildContext context) {
 Future<void> _launchUrl() async {
   final Uri _url = Uri.parse('https://github.com/Mxhito/test_task_solid');
 
-  if (!await canLaunchUrlString(_url.toString())) {
+  if (!await launchUrl(_url)) {
     throw Exception('Could not launch $_url');
   }
-  await launchUrlString(_url.toString());
 }
