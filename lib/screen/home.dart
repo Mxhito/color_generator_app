@@ -40,7 +40,14 @@ class _HomeState extends State<Home> {
           children: _colorHistory
               .map(
                 (color) => ListTile(
-                  title: color.getPreview(context),
+                  title: color.getPreview(),
+                  onTap: () {
+                    setState(() {
+                      _backgroundColor = color.color;
+                    });
+                    _copyToClipboard(text: _hexCode, context: context);
+                    Navigator.pop(context);
+                  },
                 ),
               )
               .toList(),
@@ -88,28 +95,31 @@ class ColorHistory {
   const ColorHistory(this.color, this.hexCode);
 
   /// Widget for display colors
-  Widget getPreview(BuildContext context) {
-    const double sizeOfPreview = 40;
-    const double borderRadiusOfPreview = 10;
+  Widget getPreview() {
+    const double sizeOfPreview = 50;
+    const double borderRadiusOfPreview = 2;
 
-    return GestureDetector(
-      onTap: () {
-        _copyToClipboard(hexCode, context);
-        Navigator.pop(context);
-      },
-      child: Container(
-        width: sizeOfPreview,
-        height: sizeOfPreview,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(borderRadiusOfPreview),
-        ),
-        child: Center(
-          child: Text(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: sizeOfPreview,
+            height: sizeOfPreview,
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(borderRadiusOfPreview),
+            ),
+          ),
+          const SizedBox(
+            width: sizeOfPreview,
+          ),
+          Text(
             hexCode,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -128,7 +138,7 @@ Color _generateColor() {
   );
 }
 
-void _copyToClipboard(String text, BuildContext context) {
+void _copyToClipboard({required String text, required BuildContext context}) {
   Clipboard.setData(ClipboardData(text: text));
   ScaffoldMessenger.of(context).showSnackBar(
     const SnackBar(
