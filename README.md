@@ -1,5 +1,5 @@
 # Solid Software - Color Generator
-This is a simple Flutter application that generates random colors and saves the color history. The app allows users to copy the HEX code of a color to the clipboard and open the Solid Software GitHub repository in their browser.
+This is a simple Flutter application that generates random colors and saves the color history. The app allows users to copy the HEX code of a color to the clipboard and open the Color Generator GitHub repository in their browser.
 
 ## Getting Started
 
