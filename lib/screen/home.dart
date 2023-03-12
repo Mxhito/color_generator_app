@@ -133,6 +133,8 @@ void _copyToClipboard(String text, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     const SnackBar(
       content: Text('Copied to clipboard'),
+      backgroundColor: Colors.blueAccent,
+      duration: Duration(seconds: 2),
     ),
   );
 }
@@ -140,7 +142,7 @@ void _copyToClipboard(String text, BuildContext context) {
 Future<void> _launchUrl() async {
   final Uri _url = Uri.parse('https://github.com/Mxhito/test_task_solid');
 
-  if (!await launchUrl(_url)) {
+  if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
     throw Exception('Could not launch $_url');
   }
 }
