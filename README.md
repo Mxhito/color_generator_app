@@ -26,7 +26,7 @@ Before running this app, make sure you have the following installed:
 - Generates random colors
 - Saves the color history
 - Allows users to copy the HEX code of a color to the clipboard
-- Allows users to open the Solid Software GitHub repository in their browser
+- Allows users to open the Color Generator GitHub repository in their browser
 
 ### Built With
 - Flutter
